@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+vector<int>adj[201];
+int visited[201]={0};
+int kolku=0;
+void dfs(int s)
+{
+    visited[s]=1;
+    kolku++;
+    for(int i=0;i<adj[s].size();i++)
+    {
+        int t=adj[s][i];
+        if(visited[t]==0)
+        {
+            dfs(t);
+        }
+    }
+}
+int main()
+{
+    freopen("moocast.in", "r", stdin);
+    freopen("moocast.out", "w", stdout);
+    int n;
+    cin>>n;
+    int a[n],b[n],c[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i]>>b[i]>>c[i];
+    }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=i+1;j<n;j++)
+        {
+            int x=(a[i]-a[j])*(a[i]-a[j]);
+            int y=(b[i]-b[j])*(b[i]-b[j]);
+            if(x+y<=c[i]*c[i])
+            {
+                    adj[i].push_back(j);
+            }
+            if(x+y<=c[j]*c[j])
+            {
+                adj[j].push_back(i);
+            }
+        }
+    }
+    int maks=0;
+    for(int i=0;i<n;i++)
+    {
+        memset(visited,0,sizeof(visited));
+        dfs(i);
+        if(kolku>maks)
+        {
+            maks=kolku;
+        }
+        kolku=0;
+    }
+    cout<<maks<<endl;
+}
