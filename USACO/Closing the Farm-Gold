@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+vector<int>adj[200001];
+int p[200001]={0};
+int rankk[200001]={0};
+int get(int x)
+{
+    if(x==p[x])
+    {
+        return x;
+    }
+    p[x]=get(p[x]);
+    return p[x];
+}
+bool unite(int x,int y)
+{
+    x=get(x);
+    y=get(y);
+    if(x==y)
+    {
+        return false;
+    }
+    if(rankk[x]<rankk[y])
+    {
+        swap(x,y);
+    }
+    if(rankk[x]==rankk[y])
+    {
+        rankk[x]++;
+    }
+    p[y]=x;
+    return true;
+}
+int main()
+{
+    freopen("closing.in", "r", stdin);
+    freopen("closing.out", "w", stdout);
+    int n,m;
+    cin>>n>>m;
+    int a[m];
+    int b[m];
+    for(int i=1;i<=n;i++)
+    {
+        rankk[i]=1;
+        p[i]=i;
+    }
+    for(int i=0;i<m;i++)
+    {
+        cin>>a[i]>>b[i];
+        adj[a[i]].push_back(b[i]);
+        adj[b[i]].push_back(a[i]);
+    }
+    int c[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>c[i];
+    }
+    int comp=0;
+    int vis[200001]={0};
+    vector<int>solve;
+    for(int i=(n-1);i>=0;i--)
+    {
+        int node=c[i];
+        comp++;
+        vis[node]=1;
+        for(int j=0;j<adj[node].size();j++)
+        {
+            int t=adj[node][j];
+            if( (vis[t]==1 && vis[node]==1) && get(t)!=get(node))
+            {
+                unite(t,node);
+                comp--;
+            }
+        }
+        solve.push_back(comp);
+    }
+    int x=solve.size()-1;
+    for(int i=x;i>=0;i--)
+    {
+        if(solve[i]==1)
+        {
+            cout<<"YES"<<endl;
+        }else
+        {
+            cout<<"NO"<<endl;
+        }
+    }
+}
