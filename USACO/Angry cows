@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int n,k;
+long long int a[50001];
+bool good(long long int r)
+{
+    int cnt=1;
+    long long int pocetok=a[0];
+    long long int kraj=a[0]+2*r;
+    for(int i=0;i<n;i++)
+    {
+        if(a[i]>=pocetok && a[i]<=kraj)
+        {
+            continue;
+        }else
+        {
+            cnt++;
+            pocetok=a[i];
+            kraj=a[i]+2*r;
+        }
+    }
+    if(cnt<=k)
+    {
+        return true;
+    }else
+    {
+        return false;
+    }
+}
+int main()
+{
+    //freopen("closing.in", "r", stdin);
+    //freopen("closing.out", "w", stdout);
+    freopen("angry.in","r",stdin);
+	freopen("angry.out","w",stdout);
+    cin>>n>>k;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+    sort(a,a+n);
+    long long int low=0;
+    long long int high=1e10;
+    long long int mid=0;
+    long long int ans=0;
+    while(low<=high)
+    {
+        mid=(low+high)/2;
+        //cout<<mid<<endl;
+        if(good(mid)==true)
+        {
+            ans=mid;
+            high=mid-1;
+        }else
+        {
+            low=mid+1;
+        }
+    }
+    cout<<ans<<endl;
+}
