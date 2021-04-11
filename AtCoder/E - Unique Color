@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int n;
+int a[100001];
+int b[100001];
+int c[100001];
+vector<int>adj[100001];
+int visited[100001]={0};
+int color[100001]={0};
+int kolku=0;
+vector<int>solve;
+void dfs(int s)
+{
+    if(color[c[s-1]]==0)
+    {
+        solve.push_back(s);
+    }
+    visited[s]=1;
+    color[c[s-1]]++;
+    //cout<<"gore="<<s<<" "<<c[s-1]<<" "<<color[c[s-1]]<<endl;
+    for(int i=0;i<adj[s].size();i++)
+    {
+        int t=adj[s][i];
+        if(visited[t]==0)
+        {
+            dfs(t);
+        }
+    }
+    //cout<<"dole="<<s<<" "<<c[s-1]<<" "<<color[c[s-1]]<<endl;
+    color[c[s-1]]--;
+
+}
+int main()
+{
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        cin>>c[i];
+    }
+    for(int i=0;i<(n-1);i++)
+    {
+        cin>>a[i]>>b[i];
+        adj[a[i]].push_back(b[i]);
+        adj[b[i]].push_back(a[i]);
+    }
+    dfs(1);
+    sort(solve.begin(),solve.end());
+    for(int i=0;i<solve.size();i++)
+    {
+        cout<<solve[i]<<endl;
+    }
+    //cout<<kolku<<endl;
+}
