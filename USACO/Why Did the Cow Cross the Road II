@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+   freopen("maxcross.in","r",stdin);
+   freopen("maxcross.out","w",stdout);
+   int n,k,b;
+   cin>>n>>k>>b;
+   int a[b];
+   int broken[100001]={0};
+   for(int i=0;i<b;i++)
+   {
+       cin>>a[i];
+       broken[a[i]]=1;
+   }
+   int pref[100001]={0};
+   for(int i=0;i<=n;i++)
+   {
+       if(broken[i]==0)
+       {
+            pref[i+1]=pref[i];
+       }else
+       {
+           pref[i+1]=pref[i]+1;
+       }
+   }
+   int ans=1e7;
+   for(int i=1;i<=(n-k+1);i++)
+   {
+        //cout<<i<<" "<<i+k<<" "<<pref[i]<<" "<<pref[i+k]<<endl;
+        ans=min(ans,pref[i+k]-pref[i]);
+   }
+   cout<<ans<<endl;
+}
