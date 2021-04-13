@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+vector< pair<int,int> >adj[101][101];
+int upaleni[101][101]= {0};
+int visited[101][101]= {0};
+int ans=0;
+int n,m;
+void floodfill(int r,int c)
+{
+    if(r<=0 || r>n || c<=0 || c>n)
+    {
+        return;
+    }
+    if(upaleni[r][c]==0)
+    {
+        return;
+    }
+    if(visited[r][c]==1)
+    {
+        return;
+    }
+    else
+    {
+        visited[r][c]=1;
+        for(pair<int,int> other:adj[r][c])
+        {
+            int x1=other.first;
+            int x2=other.second;
+            if(upaleni[x1][x2]==0)
+            {
+                upaleni[x1][x2]=1;
+                ans++;
+            }
+            if(visited[x1][x2-1]==1 || visited[x1][x2+1]==1 || visited[x1+1][x2]==1 || visited[x1-1][x2]==1)
+            {
+                //cout<<"ej"<<endl;
+                floodfill(x1,x2);
+            }
+        }
+    }
+    floodfill(r,c-1);
+    floodfill(r,c+1);
+    floodfill(r+1,c);
+    floodfill(r-1,c);
+}
+int main()
+{
+    freopen("lightson.in", "r", stdin);
+    freopen("lightson.out", "w", stdout);
+    cin>>n>>m;
+    int x,y,a,b;
+    for(int i=0; i<m; i++)
+    {
+        cin>>x>>y>>a>>b;
+        adj[x][y].push_back(make_pair(a,b));
+    }
+    upaleni[1][1]=1;
+    floodfill(1,1);
+    cout<<ans+1<<endl;
+}
