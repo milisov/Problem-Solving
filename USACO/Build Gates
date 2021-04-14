@@ -1,0 +1,95 @@
+// koga setiram size na matrica 1000x1000 runtime error
+
+#include <bits/stdc++.h>
+using namespace std;
+bool visited[500][500];
+bool wdown[500][500];
+bool wup[500][500];
+bool wleft[500][500];
+bool wright[500][500];
+void floodfill(int rr,int cc)
+{
+    //cout<<rr<<" "<<cc<<endl;
+    if(rr<0 || rr>500 || cc<0 || cc>500)
+    {
+        return;
+    }
+    if(visited[rr][cc]==true)
+    {
+        return;
+    }else
+    {
+        visited[rr][cc]=true;
+        if(wdown[rr][cc]==false)
+        {
+            floodfill(rr+1,cc);
+        }
+        if(wup[rr][cc]==false)
+        {
+            floodfill(rr-1,cc);
+        }
+        if(wleft[rr][cc]==false)
+        {
+            floodfill(rr,cc-1);
+        }
+        if(wright[rr][cc]==false)
+        {
+            floodfill(rr,cc+1);
+        }
+    }
+
+}
+int main()
+{
+    //freopen("gates.in", "r", stdin);
+    //freopen("gates.out", "w", stdout);
+    //cin.tie(0)->sync_with_stdio(0);
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    int r=250;
+    int c=250;
+    for(int i=0;i<n;i++)
+    {
+        if(s[i]=='E')
+        {
+            wdown[r-1][c]=true;
+            wup[r][c]=true;
+            c=c+1;
+        }
+        if(s[i]=='W')
+        {
+            wup[r][c-1]=true;
+            wdown[r-1][c-1]=true;
+            c=c-1;
+        }
+        if(s[i]=='N')
+        {
+            wright[r-1][c-1]=true;
+            wleft[r-1][c]=true;
+            r=r-1;
+        }
+        if(s[i]=='S')
+        {
+            wright[r][c-1]=true;
+            wleft[r][c]=true;
+            r=r+1;
+        }
+    }
+    int ans=0;
+    for(int i=0;i<500;i++)
+    {
+        for(int j=0;j<500;j++)
+        {
+            if(visited[i][j]==false)
+            {
+                //cout<<i<<" "<<j<<endl;
+                floodfill(i,j);
+                ans++;
+                //return 0;
+            }
+        }
+    }
+    cout<<ans-1<<endl;
+}
