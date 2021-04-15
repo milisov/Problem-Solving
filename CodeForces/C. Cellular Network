@@ -1,0 +1,56 @@
+//Greedy + Binary Search(upper/lower bound) // USACO guide
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    long long int a[n];
+    long long int b[m];
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+    for(int j=0;j<m;j++)
+    {
+        cin>>b[j];
+    }
+    long long int dist=-1e18;
+    for(int i=0;i<n;i++)
+    {
+        int low=0,high=m-1,mid=0,right=-1;
+        while(low<=high)
+        {
+            mid=(low+high)/2;
+            if(b[mid]>=a[i])
+               {
+                   right=mid;
+                   high=mid-1;
+               }else
+               {
+                   low=mid+1;
+               }
+        }
+        int left=0;
+        if(right!=-1)
+        {
+            if(right==0)
+            {
+                left=0;
+            }else
+            {
+                left=right-1;
+            }
+        }else
+        {
+            //cout<<"e"<<endl;
+             left=m-1;
+             right=m-1;
+        }
+        //cout<<a[i]<<" "<<b[right]<<" "<<b[left]<<" "<<right<<" "<<left<<endl;
+        dist=max(dist,min(abs(a[i]-b[left]),abs(b[right]-a[i])));
+    }
+    cout<<dist<<endl;
+}
