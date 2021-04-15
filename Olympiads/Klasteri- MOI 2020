@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+int p[100001]={0};
+int rankk[100001]={0};
+int sizee[100001]={1};
+int get(int x)
+{
+    if(x==p[x])
+    {
+        return x;
+    }
+    p[x]=get(p[x]);
+    return p[x];
+}
+bool unite(int x,int y)
+{
+    x=get(x);
+    y=get(y);
+    if(x==y)
+    {
+        return false;
+    }
+    if(rankk[x]<rankk[y])
+    {
+        swap(x,y);
+    }
+    if(rankk[x]==rankk[y])
+    {
+        rankk[x]++;
+    }
+        p[y]=x;
+        sizee[x]=sizee[x]+sizee[y];
+        return true;
+}
+int main()
+{
+    int m;
+    cin>>m;
+    map<int,int>sz;
+    map<int,int>opasni;
+    map<int,int>bezop;
+    for(int i=0;i<m;i++)
+    {
+        sizee[i]=1;
+        p[i]=i;
+        rankk[i]=0;
+    }
+    int o;
+    cin>>o;
+    int a[o],b[o];
+    for(int i=0;i<o;i++)
+    {
+        cin>>a[i]>>b[i];
+        opasni[a[i]]++;
+        opasni[b[i]]++;
+        unite(a[i],b[i]);
+    }
+    int s;
+    cin>>s;
+    int x[s],y[s];
+    for(int i=0;i<s;i++)
+    {
+        cin>>x[i]>>y[i];
+        if(get(x[i])==get(y[i]))
+        {
+        bezop[x[i]]++;
+        bezop[y[i]]++;
+        }
+    }
+    for(int i=1;i<=m;i++)
+    {
+         int j=get(i);
+         //cout<<bezop[i]<<" "<<opasni[i]<<endl;
+         int rez=sizee[j]-bezop[i]-opasni[i]-1;
+         cout<<rez<<endl;
+    }
+}
