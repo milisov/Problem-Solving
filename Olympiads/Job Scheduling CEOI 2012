@@ -1,0 +1,66 @@
+// harder implementation than binary search idea
+#include <bits/stdc++.h>
+
+using namespace std;
+int n,d,m;
+int a[1000006];
+vector< pair<int,int> >par;
+bool works(int x)
+{
+    int curr=0;
+    for(int day=0;day<n;day++)
+    {
+        for(int j=0;j<x;j++)
+        {
+            if(curr<m && par[curr].first<=day+1 && par[curr].first>=day+1-d)
+            {
+                curr++;
+            }else
+            {
+                break;
+            }
+        }
+    }
+    if(curr==m)
+    {
+        return true;
+    }else
+    {
+        return false;
+    }
+}
+int main()
+{
+    cin>>n>>d>>m;
+    for(int i=0;i<m;i++)
+    {
+        cin>>a[i];
+        par.push_back(make_pair(a[i],i+1));
+    }
+    sort(par.begin(),par.end());
+    int low=0,high=m,mid,ans=-1;
+    while(low<=high)
+    {
+        mid=(low+high)/2;
+        if(works(mid)==true)
+        {
+            ans=mid;
+            high=mid-1;
+        }else
+        {
+            low=mid+1;
+        }
+    }
+    cout<<ans<<endl;
+    int cur = 0;
+	for(int day=0;day<n;day++) {
+        for(int i=0;i<ans;i++) {
+            if(cur<m && par[cur].first<=day+1 && par[cur].first+d>=day+1) {
+                printf("%d ",par[cur].second);
+                cur++;
+            }
+            else break;
+        }
+        printf("0\n");
+	}
+}
