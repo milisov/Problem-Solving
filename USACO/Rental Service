@@ -1,0 +1,98 @@
+// Prefix sums /sortings
+
+#include <bits/stdc++.h>
+
+using namespace std;
+bool sortbysec(const pair<int,int> &a,const pair<int,int> &b)
+{
+    return (a.second > b.second);
+}
+int main()
+{
+    freopen("rental.in", "r", stdin);
+    freopen("rental.out", "w", stdout);
+    long long int n,m,r;
+    cin>>n>>m>>r;
+    long long int a[n];
+    vector<long long int>kravi;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+        kravi.push_back(a[i]);
+    }
+    long long int b[m],c[m];
+    vector< pair<long long int,long long int> >shops;
+    for(int i=0;i<m;i++)
+    {
+        cin>>b[i]>>c[i];
+        shops.push_back(make_pair(b[i],c[i]));
+    }
+    long long int d[r];
+    vector<long long int>rent;
+    for(int i=0;i<r;i++)
+    {
+        cin>>d[i];
+        rent.push_back(d[i]);
+    }
+    sort(rent.begin(),rent.end(),greater<int>());
+    sort(kravi.begin(),kravi.end(),greater<int>());
+    sort(shops.begin(),shops.end(),sortbysec);
+    //sort(d,d+r);
+    long long int sprofit[n+1]={0};
+    long long int rprofit[n+2]={0};
+    long long int kolku=0;
+    int curr=0;
+    for(int i=1;i<=n;i++)
+    {
+        sprofit[i]=sprofit[i-1];
+        kolku=kravi[i-1];
+            if(curr==m)
+            {
+                continue;
+            }
+        while(kolku>0)
+        {
+            if(shops[curr].first>0)
+            {
+                if(kolku<=shops[curr].first)
+                {
+                    sprofit[i]=sprofit[i]+kolku*shops[curr].second;
+                    shops[curr].first=shops[curr].first-kolku;
+                    kolku=0;
+                }else
+                {
+                    sprofit[i]=sprofit[i]+shops[curr].first*shops[curr].second;
+                    kolku=kolku-shops[curr].first;
+                    shops[curr].first=0;
+                    curr++;
+                }
+            }else
+            {
+                curr++;
+            }
+            if(curr==m)
+            {
+                break;
+            }
+        }
+    }
+    int cur=0;
+    for(int i=1;i<=n;i++)
+    {
+        if(cur==r)
+        {
+            continue;
+        }else
+        {
+            rprofit[i]=rprofit[i-1]+rent[cur];
+            cur++;
+        }
+    }
+    long long int ans=0;
+    for(int i=0;i<=n;i++)
+    {
+        ans=max(ans,sprofit[n-i]+rprofit[i]);
+       // cout<<sprofit[n-i]<<" "<<rprofit[i]<<endl;
+    }
+    cout<<ans<<endl;
+}
