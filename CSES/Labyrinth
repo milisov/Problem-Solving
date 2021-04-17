@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    char a[n][m];
+    int px=0;
+    int py=0;
+    int kx=0;
+    int ky=0;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            cin>>a[i][j];
+            if(a[i][j]=='A')
+            {
+                px=i;
+                py=j;
+            }
+            if(a[i][j]=='B')
+            {
+                kx=i;
+                ky=j;
+            }
+        }
+    }
+    bool vis[1005][1005];
+    int dx[4] = { -1, 0, 1, 0 };
+    int dy[4] = { 0, 1, 0, -1 };
+    int parent[n+5][m+5];
+    queue<int>q;
+    q.push(px);
+    q.push(py);
+    vis[px][py]=true;
+    while(!q.empty())
+    {
+        int ii=q.front();
+        q.pop();
+        int jj=q.front();
+        q.pop();
+        for(int i=0;i<4;i++)
+        {
+            int ni;
+            int nj;
+            ni=ii+dx[i];
+            nj=jj+dy[i];
+            if(ni<0 || ni>=n || nj<0 || nj>=m)
+            {
+                continue;
+            }
+            if(a[ni][nj]=='#')
+            {
+                continue;
+            }
+            if(vis[ni][nj]==true)
+            {
+                continue;
+            }
+            vis[ni][nj]=true;
+            parent[ni][nj]=i;
+            q.push(ni);
+            q.push(nj);
+        }
+    }
+    int curx=kx;
+    int cury=ky;
+    int tt=0;
+    vector<int>steps;
+    if(vis[kx][ky]==true)
+    {
+        cout<<"YES"<<endl;
+        while(tt==0)
+        {
+            int t=parent[curx][cury];
+            steps.push_back(t);
+            curx=curx-dx[t];
+            cury=cury-dy[t];
+            if(curx==px && cury==py)
+            {
+                tt=1;
+                break;
+            }
+        }
+        reverse(steps.begin(),steps.end());
+        cout<<steps.size()<<endl;
+        for(int i=0;i<steps.size();i++)
+        {
+            if(steps[i]==0)
+            {
+                cout<<"U";
+            }
+            if(steps[i]==1)
+            {
+                cout<<"R";
+            }
+            if(steps[i]==2)
+            {
+                cout<<"D";
+            }
+            if(steps[i]==3)
+            {
+                cout<<"L";
+            }
+        }
+        cout<<endl;
+    }else
+    {
+        cout<<"NO"<<endl;
+    }
+}
