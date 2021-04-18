@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int p[100005];
+int rankk[100005];
+int sizee[100005];
+int n,m;
+int komponenti;
+int get(int x)
+{
+    if(p[x]==x)
+    {
+        return x;
+    }
+    p[x]=get(p[x]);
+    return p[x];
+}
+bool unite(int x,int y)
+{
+    x=get(x);
+    y=get(y);
+    if(x==y)
+    {
+        return false;
+    }
+    if(rankk[x]<rankk[y])
+    {
+        swap(x,y);
+    }
+    if(rankk[x]==rankk[y])
+    {
+        rankk[x]++;
+    }
+    p[y]=x;
+    sizee[x]=sizee[x]+sizee[y];
+    komponenti--;
+    return true;
+}
+int main()
+{
+    cin>>n>>m;
+    komponenti=n;
+    for(int i=1;i<=n;i++)
+    {
+        p[i]=i;
+        rankk[i]=0;
+        sizee[i]=1;
+    }
+    int a[m],b[m];
+    for(int i=0;i<m;i++)
+    {
+        cin>>a[i]>>b[i];
+    }
+    int maks=0;
+   // cout<<komponenti<<endl;
+    for(int i=0;i<m;i++)
+    {
+        unite(a[i],b[i]);
+        if(sizee[get(a[i])]>maks)
+        {
+            maks=sizee[get(a[i])];
+        }
+        cout<<komponenti<<" "<<maks<<endl;
+    }
+}
