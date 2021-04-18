@@ -1,0 +1,95 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+# define f first
+# define s second
+# define mp make_pair
+# define pb push_back
+bool cmp(const pair<pair<int,int>,int>&a, const pair<pair<int,int>,int> &b)
+{
+	return a.s > b.s;
+}
+bool cmp2(const pair<pair<int,int>,int>&a, const pair<pair<int,int>,int> &b)
+{
+	return a.f.f > b.f.f;
+}
+int p[100005];
+int rankk[100005];
+int sizee[100005];
+int get(int x)
+{
+    if(x==p[x])
+    {
+        return x;
+    }
+    p[x]=get(p[x]);
+    return p[x];
+}
+bool unite(int x,int y)
+{
+    x=get(x);
+    y=get(y);
+    if(x==y)
+    {
+        return false;
+    }
+    if(rankk[x]<rankk[y])
+    {
+        swap(x,y);
+    }
+    if(rankk[x]==rankk[y])
+    {
+        rankk[x]++;
+    }
+    p[y]=x;
+    sizee[x]=sizee[x]+sizee[y];
+    return true;
+}
+int main()
+{
+    freopen("mootube.in", "r", stdin);
+	freopen("mootube.out", "w", stdout);
+
+    vector< pair<pair<int,int>,int > >edges;
+    vector< pair<pair<int,int>,int > >queries;
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)
+    {
+        p[i]=i;
+        rankk[i]=0;
+        sizee[i]=1;
+    }
+    int a,b,w;
+    for(int i=0;i<n-1;i++)
+    {
+        cin>>a>>b>>w;
+        edges.pb(mp(mp(a,b),w));
+    }
+    int k,v;
+    for(int i=0;i<m;i++)
+    {
+        cin>>k>>v;
+        queries.pb(mp(mp(k,v),i+1));
+    }
+    sort(edges.begin(),edges.end(),cmp);
+    sort(queries.begin(),queries.end(),cmp2);
+    int ans[m+1];
+    int doo=0;
+    for(int i=0;i<queries.size();i++)
+    {
+        while(doo<=(n-1) && queries[i].f.f<=edges[doo].s)
+        {
+            //cout<<"edges="<<" "<<queries[i].f.f<<" "<<edges[doo].f.f<<" "<<edges[doo].f.s<<endl;
+            unite(edges[doo].f.f,edges[doo].f.s);
+            doo++;
+        }
+        ans[queries[i].s]=sizee[get(queries[i].f.s)]-1;
+        //cout<<sizee[get(queries[i].f.s)]<<" "<<queries[i].f.s<<endl;
+    }
+    for(int i=1;i<=m;i++)
+    {
+        cout<<ans[i]<<endl;
+    }
+}
