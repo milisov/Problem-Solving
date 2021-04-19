@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+vector<int>adj[100005];
+bool color[100005];
+bool vis[100005];
+int tt;
+void dfs(int s,bool c=0)
+{
+    vis[s]=true;
+    color[s]=c;
+    for(int i=0; i<adj[s].size(); i++)
+    {
+        int t=adj[s][i];
+        if(vis[t]==true)
+        {
+            if(color[s]==color[t])
+            {
+                tt=1;
+                //cout<<s<<" "<<t<<" "<<color[s]<<" "<<color[t]<<" "<<tt<<endl;
+            }
+        }
+        else
+        {
+            dfs(t,!c);
+        }
+    }
+}
+int main()
+{
+    //int t=0;
+    int n,m;
+    cin>>n>>m;
+    int a[m],b[m];
+    for(int i=0; i<m; i++)
+    {
+        cin>>a[i]>>b[i];
+        adj[a[i]].push_back(b[i]);
+        adj[b[i]].push_back(a[i]);
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(vis[i]==false)
+        {
+            dfs(i);
+        }
+    }
+    if(tt==1)
+    {
+        cout<<"IMPOSSIBLE"<<endl;
+    }else
+    {
+        for(int i=1;i<=n;i++)
+        {
+            cout<<color[i]+1<<" ";
+        }
+    }
+}
