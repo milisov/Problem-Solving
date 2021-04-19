@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define pb push_back
+bool visited[100005];
+bool color[100005];
+vector<int>adj[100005];
+void dfs(int s,int c=0)
+{
+    visited[s]=1;
+    color[s]=c;
+    for(int i=0;i<adj[s].size();i++)
+    {
+        int t=adj[s][i];
+        if(visited[t]==false)
+        {
+            dfs(t,!c);
+        }
+    }
+}
+int main()
+{
+    int n;
+    cin>>n;
+    int a[n],b[n];
+    for(int i=0;i<(n-1);i++)
+    {
+        cin>>a[i]>>b[i];
+        adj[a[i]].pb(b[i]);
+        adj[b[i]].pb(a[i]);
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(visited[i]==false)
+        {
+            dfs(i);
+        }
+    }
+    long long int nuli=0;
+    long long int kecovi=0;
+    for(int i=1;i<=n;i++)
+    {
+        if(color[i]==0)
+        {
+            nuli++;
+        }else
+        {
+            kecovi++;
+        }
+    }
+    cout<<nuli*kecovi-(n-1)<<endl;
+}
