@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    int n;
+    cin>>n;
+    long long int p=1;
+    vector<int>v;
+    for(int i=1;i<=n-1;i++)
+    {
+        if(__gcd(i,n)==1)
+        {
+            p=p*(i%n);
+            p=p%n;
+            v.push_back(i);
+        }
+    }
+    if(p==1)
+    {
+        cout<<v.size()<<endl;
+        for(int i=0;i<v.size();i++)
+        {
+            cout<<v[i]<<" ";
+        }
+    }else
+    {
+        cout<<v.size()-1<<endl;
+        for(int i=0;i<v.size();i++)
+        {
+            if(v[i]!=p)
+            {
+                cout<<v[i]<<" ";
+            }
+        }
+    }
+}
