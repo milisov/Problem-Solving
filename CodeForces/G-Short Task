@@ -1,0 +1,38 @@
+// NT magic
+
+#include <bits/stdc++.h>
+
+using namespace std;
+const int maxn=10000006;
+int vis[maxn]={0};
+int delitel[maxn]={0};
+int main()
+{
+    int k=maxn;
+    for(int i=1;i<=k;i++)
+    {
+        for(int j=i;j<=k;j=j+i)
+        {
+            delitel[j]=delitel[j]+i;
+        }
+        if(delitel[i]<maxn && vis[delitel[i]]==0)
+        {
+            vis[delitel[i]]=i;
+        }
+    }
+    int t;
+    cin>>t;
+    while(t>0)
+    {
+        int n;
+        cin>>n;
+        if(vis[n]==0)
+        {
+            cout<<-1<<endl;
+        }else
+        {
+            cout<<vis[n]<<endl;
+        }
+        t--;
+    }
+}
