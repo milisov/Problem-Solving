@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int p[10001];
+int rankk[10001];
+int komponenti;
+int get(int x)
+{
+    if(x==p[x])
+    {
+        return x;
+    }
+    p[x]=get(p[x]);
+    return p[x];
+}
+bool unite(int x,int y)
+{
+    x=get(x);
+    y=get(y);
+    if(x==y)
+    {
+        return false;
+    }
+    if(rankk[x]<rankk[y])
+    {
+        swap(x,y);
+    }
+    if(rankk[x]==rankk[y])
+    {
+        rankk[x]++;
+    }
+    p[y]=x;
+    komponenti--;
+    return true;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    komponenti=n;
+    for(int i=1;i<=n;i++)
+    {
+        p[i]=i;
+        rankk[i]=0;
+    }
+    int a[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+        unite(a[i],i+1);
+    }
+    cout<<komponenti<<endl;
+}
