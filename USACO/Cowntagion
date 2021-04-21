@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+vector<int>adj[100005];
+bool visited[100005];
+int logarithm(int num)
+{
+    int br=1;
+    int kolku=0;
+    while(br<=num)
+    {
+       br=br*2;
+       kolku++;
+    }
+    return kolku;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    int a[n],b[n];
+    for(int i=0;i<(n-1);i++)
+    {
+        cin>>a[i]>>b[i];
+        adj[a[i]].push_back(b[i]);
+        adj[b[i]].push_back(a[i]);
+    }
+    queue<int>q;
+    q.push(1);
+    visited[1]=true;
+    int cnt=0;
+    int sum=0;
+    while(!q.empty())
+    {
+        cnt=0;
+        int s=q.front();
+        //cout<<"s="<<s<<endl;
+        q.pop();
+        for(int i=0;i<adj[s].size();i++)
+        {
+            int t=adj[s][i];
+            if(visited[t]==false)
+            {
+                visited[t]=true;
+                q.push(t);
+                cnt++;
+            }
+        }
+        //cout<<cnt<<" "<<logarithm(cnt)<<endl;
+        sum=sum+logarithm(cnt);
+        //cout<<cnt<<" "<<logarithm(cnt+1)<<endl;
+    }
+    cout<<sum+n-1<<endl;
+}
