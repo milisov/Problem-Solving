@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define f first
+#define s second
+int main()
+{
+    long long int n,m;
+    cin>>n>>m;
+    long long int a[n];
+    vector< pair<long long int,int> >par;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+        par.push_back(make_pair(a[i],i+1));
+    }
+    sort(par.begin(),par.end());
+    for(int i=0;i<n;i++)
+    {
+        int l=0;
+        int r=n-1;
+        while(l<r)
+        {
+            //cout<<par[l].f<<" "<<par[r].f<<endl;
+            long long int target=m-par[i].f;
+            if(par[l].f+par[r].f==target && par[l].s != par[i].s && par[r].s != par[i].s)
+            {
+                cout<<par[l].s<<" "<<par[r].s<<" "<<par[i].s<<endl;
+                return 0;
+            }
+            if(par[l].f+par[r].f<target)
+            {
+                l++;
+            }
+            if(par[l].f+par[r].f>=target)
+            {
+                r--;
+            }
+        }
+    }
+    cout<<"IMPOSSIBLE"<<endl;
+}
