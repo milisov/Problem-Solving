@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define pb push_back
+
+vector<int>adj[200005];
+int dis=0;
+int u;
+void dfs(int s,int p,int depth)
+{
+    for(int i=0;i<adj[s].size();i++)
+    {
+        int t=adj[s][i];
+        if(t==p)
+        {
+            continue;
+        }
+        //cout<<"tuka"<<endl;
+        dfs(t,s,depth+1);
+    }
+    //cout<<s<<" "<<p<<" "<<depth<<endl;
+    if(depth>dis)
+    {
+        dis=depth;
+        u=s;
+    }
+}
+int main()
+{
+   int n;
+   cin>>n;
+   int a[n],b[n];
+   for(int i=0;i<(n-1);i++)
+   {
+       cin>>a[i]>>b[i];
+       adj[a[i]].pb(b[i]);
+       adj[b[i]].pb(a[i]);
+   }
+   dfs(1,-1,0);
+   dis=0;
+   dfs(u,-1,0);
+   cout<<dis<<endl;
+}
